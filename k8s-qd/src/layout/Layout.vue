@@ -18,9 +18,7 @@
                     v-model:selectedKeys="selectedKeys1"
                     theme="dark"
                     mode="horizontal">
-                    <a-menu-item v-for="item in clusterList" :key="item" @click="clusterChange(item)">
-                        {{ item }}
-                    </a-menu-item>
+                    <a-menu-item v-for="item in clusterList" :key="item" @click="clusterChange(item)">{{ item }}</a-menu-item>
                 </a-menu>
                 <!-- 用户信息
                     down-outlined 向下的小图标
@@ -132,19 +130,24 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, reactive, onBeforeMount } from 'vue';
 import kubeLogo from '@/assets/k8s-metrics.png'
 import avator from '@/assets/avator.png'
 import { useRouter } from 'vue-router'
+import httpClient from '@/request';
+import common from "@/config";
+import { message } from 'ant-design-vue';
 
 export default ({
     setup() {
+        const appLoading = ref(false)
         const collapsed = ref(false)
         const selectedKeys1 = ref([])
-        const clusterList = ref([
-            '外网',
-            '内网'
-        ])
+        //集群列表
+        const clusterList = ref([])
+        const clusterListData = reactive({
+            url: common.k8sClusterList,
+        })
 
         //侧边栏的属性
         //路由信息
@@ -155,6 +158,36 @@ export default ({
         const router = useRouter()
 
         //【这里开始是方法】
+        //列表
+        const getClusterList = () => {
+            appLoading.value = true
+            httpClient.get(clusterListData.url)
+            .then(res => {
+                //响应成功，获取deployment列表和total
+                clusterList.value = res.data
+                localStorage.setItem('cluster_num', clusterList.value.length)
+                if (!selectedKeys1.value.length) {
+                    selectedKeys1.value[0] = clusterList.value[0]
+                    localStorage.setItem('k8s_cluster', clusterList.value[0])
+                }
+            })
+            .catch(res => {
+                message.error(res.msg)
+            })
+            .finally(() => {
+                appLoading.value = false
+            })
+        }
+        const clusterChange = (val) => {
+            if (selectedKeys1.value[0] == val) {
+                return
+            } else {
+                selectedKeys1.value[0] = val
+                localStorage.setItem('k8s_cluster', val)
+                //router.push(router.currentRoute.value.path)
+                location.replace(router.currentRoute.value.path)
+            }
+        }
         function logout() {
             //移除用户名
             localStorage.removeItem('username')
@@ -195,6 +228,12 @@ export default ({
         })
 
         //生命周期钩子
+        onBeforeMount(() => {
+            getClusterList()
+            if (localStorage.getItem('k8s_cluster')) {
+                selectedKeys1.value[0] = localStorage.getItem('k8s_cluster')
+            }
+        })
         onMounted(() => {
             routers.value = router.options.routes
             //router.currentRoute.value.matched用来获取当前路由层级信息
@@ -213,7 +252,8 @@ export default ({
             router,
             routeChange,
             onOpenChange,
-            logout
+            logout,
+            clusterChange
         }
     },
 })

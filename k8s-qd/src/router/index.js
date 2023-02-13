@@ -7,7 +7,7 @@ import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 //引入layout布局
 import Layout from "@/layout/Layout"
-//import jwt from "jsonwebtoken"
+import jwt from "jsonwebtoken"
 
 //定义路由规则
 const routes = [
@@ -154,19 +154,19 @@ router.beforeEach((to, from, next) => {
     next()
 });
 
-// //使用钩子函数对路由进行权限跳转
-// router.beforeEach((to, from, next) => {
-//     //验证jwt token是否合法
-//     jwt.verify(localStorage.getItem('token'), 'adoodevops', function (err) {
-//         if (to.path === '/login') {
-//             next()
-//         } else if (err) {
-//             next('/login');
-//         } else {
-//             next();
-//         }
-//     });
-// });
+//使用钩子函数对路由进行权限跳转
+router.beforeEach((to, from, next) => {
+    //验证jwt token是否合法
+    jwt.verify(localStorage.getItem('token'), 'adoodevops', function (err) {
+        if (to.path === '/login') {
+            next()
+        } else if (err) {
+            next('/login');
+        } else {
+            next();
+        }
+    });
+});
 
 router.afterEach(() => {
     //关闭进度条

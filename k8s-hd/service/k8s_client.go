@@ -10,18 +10,14 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 )
 
-//实例化k8s对象，可使用该对象点出首字母大写的方法(跨包调用)
 var K8s k8s
 
-//定义k8s结构体
-type k8s struct{
-	//提供多集群client
+type k8s struct {
 	ClientMap map[string]*kubernetes.Clientset
-	//提供集群列表功能
 	KubeConfMap map[string]string
 }
 
-//根据集群名获取client
+
 func(k *k8s) GetClient(cluster string) (*kubernetes.Clientset, error) {
 	client, ok := k.ClientMap[cluster]
 	if !ok {
@@ -30,11 +26,10 @@ func(k *k8s) GetClient(cluster string) (*kubernetes.Clientset, error) {
 	return client, nil
 }
 
-//初始化client
 func(k *k8s) Init() {
-	mp := make(map[string]string, 0)
-	k.ClientMap = make(map[string]*kubernetes.Clientset, 0)
-	//反序列化
+	mp := map[string]string{}
+	k.ClientMap = map[string]*kubernetes.Clientset{}
+
 	if err := json.Unmarshal([]byte(config.Kubeconfigs), &mp); err != nil {
 		panic(fmt.Sprintf("Kubeconfigs反序列化失败 %v\n", err))
 	}

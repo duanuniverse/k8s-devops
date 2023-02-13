@@ -7,6 +7,7 @@ import router from './router'
 import Antd from 'ant-design-vue'
 //引入ant暗黑风格主题以及图标
 import 'ant-design-vue/dist/antd.dark.css'
+import CButton from '@/components/CButton'
 //引入ant图标
 import * as Icons from '@ant-design/icons-vue'
 
@@ -15,6 +16,7 @@ const app = createApp(App)
 for (const i in Icons) {
     app.component(i, Icons[i])
 }
+app.component('c-button', CButton)
 //引入antd
 app.use(Antd)
 //引入router
