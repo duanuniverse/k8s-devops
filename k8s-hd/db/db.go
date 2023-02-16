@@ -6,7 +6,6 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/mysql" //gorm对应的mysql驱动
 	"github.com/wonderivan/logger"
 	"k8s-hd/config"
-	"k8s-hd/model"
 	"time"
 )
 
@@ -49,7 +48,8 @@ func Init() {
 	GORM.DB().SetConnMaxLifetime(time.Duration(config.MaxLifeTime))
 
 	isInit = true
-	GORM.AutoMigrate(model.Chart{}, model.Event{})
+	//GORM.AutoMigrate(model.Chart{}, model.Event{})
+	//GORM.AutoMigrate(model.Project{})
 	logger.Info("连接数据库成功!")
 }
 

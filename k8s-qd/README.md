@@ -1,4 +1,4 @@
-# k8s-qd
+# k8s-platform
 
 ## Project setup
 ```

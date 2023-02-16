@@ -1,0 +1,20 @@
+server:
+  appName: go_web_test
+  port: 9090
+  ListenAddr: "0.0.0.0:9090"
+
+db:
+  type: "mysql"
+  host: "192.168.3.179"
+  port: 3306
+  dbname: "k8s-devops"
+  user: "root"
+  pwd: "fkR/CCI7T2Um"
+  logMode: "false"
+  maxIdleConns: 10 //最大空闲连接
+  maxOpenConns: 1000 //最大连接数
+  connMaxLifetime: 60 //最大生存时间
+
+gitlab:
+  token: "9mNiN2xxErU-mzX29mnW"
+  url: "http://192.168.1.233:8091/"

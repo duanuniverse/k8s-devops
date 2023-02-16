@@ -5,8 +5,9 @@ const httpClient = axios.create({
     validateStatus(status) {
         return status >= 200 && status < 504 // 设置默认的合法的状态
     },
-    timeout: 20000   //超时时间20秒
+    timeout: 20000   //超时时间10秒
 });
+
 
 httpClient.defaults.retry = 3 // 请求重试次数
 httpClient.defaults.retryDelay = 1000 // 请求重试时间间隔

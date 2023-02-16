@@ -1,0 +1,13 @@
+server:
+  appName: go_web_test
+  port: 8888
+
+db:
+  dsn: "root:fkR/CCI7T2Um@(192.168.3.179:3306)/k8s-devops?charset=utf8mb4&parseTime=True&loc=Local"
+  maxIdleConns: 200
+  maxOpenConns: 1000
+  connMaxLifetime: 60
+
+gitlab:
+  token: "9mNiN2xxErU-mzX29mnW"
+  url: "http://192.168.1.233:8091/"

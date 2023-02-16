@@ -8,7 +8,7 @@ const (
 	WsAddr = "0.0.0.0:8081"
 	//kubeconfig路径
 	//Kubeconfig = "F:\\goproject\\config"  windows路径
-	Kubeconfigs = `{"TEST-1":".\\config\\k8s-config","TEST-2":".\\config\\k8s-config"}`
+	Kubeconfigs = `{"extranet":".\\config\\k8s-config","intranet":".\\config\\k8s-config"}`
 	//pod日志tail显示行数
 	PodLogTailLine = 2000
 	//登录账号密码
@@ -30,4 +30,7 @@ const (
 	MaxLifeTime = 30 * time.Second //最大生存时间
 	//helm配置
 	UploadPath = "/Users/adoo/chart"
+
+	Token = "9mNiN2xxErU-mzX29mnW" //gitlab token
+	Url = "http://192.168.1.233:8091/" // gitlab URL
 )
