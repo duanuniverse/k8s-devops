@@ -8,7 +8,11 @@ import (
 	"strconv"
 )
 
-var Project ProjectHandler
+func NewProjectHandler(projectService service.IProjectService) ProjectHandler {
+	return ProjectHandler{
+		ProjectService: projectService,
+	}
+}
 
 type ProjectHandler struct {
 	//注意这里的类型实 IProjectService 接口类型
@@ -20,8 +24,8 @@ func (e *ProjectHandler) FindProjectByID(ctx *gin.Context) {
 
 	id := ctx.Param("id")
 	PId, _ := strconv.Atoi(id)
-	
-	project, _ := e.ProjectService.FindProjectByID(int64(PId))
+
+	project, _ := e.ProjectService.FindProjectByID(PId)
 
 	ctx.JSON(http.StatusOK, dto.Ok(project))
 }

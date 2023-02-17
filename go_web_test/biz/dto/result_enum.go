@@ -11,7 +11,7 @@ const (
 	SignatureVerifyErr        = "-10007" // 验证第三方签名失败
 	JwtUserNotMatchErr        = "-10008" // Jwt校验用户不一致
 
-	Success             = "0"   // 成功
+	Success             = "200"   // 成功
 	Unauthorized        = "401" // token校验错误
 	InternalServerError = "500" // 服务器内部错误
 

@@ -1,29 +1,42 @@
 package service
 
 import (
-	"errors"
-	logger "github.com/sirupsen/logrus"
-	"github.com/xanzy/go-gitlab"
 	"gitlab-hd/a_gitlab/dao"
 	"gitlab-hd/a_gitlab/model"
-	mygitlab "gitlab-hd/config/gitlab"
 )
 
 type IProjectService interface {
-	FindProjectByID(int64) (*model.Project, error)
+	FindProjectByID(int) (*model.Project, error)
 	//GetGitlabProject() ([]model.Project, error)
 }
 
+func NewProjectdao(projectDao dao.IProjectdao) IProjectService {
+	return &ProjectService{
+		ProjectDao: projectDao,
+	}
+}
+
 type ProjectService struct {
-	ProjectDao dao.IPodDao
+	ProjectDao dao.IProjectdao
 }
 
 //单个ID查找
-func (p *ProjectService) FindProjectByID(id int64) (*model.Project, error) {
+func (p *ProjectService) FindProjectByID(id int) (projects *model.Project, err error) {
 	return p.ProjectDao.FindProjectByID(id)
+	/*projects = &model.Project{
+		ID:          1,
+		CreatedAt:   time.Time{},
+		UpdatedAt:   time.Time{},
+		DeletedAt:   nil,
+		ProjectName: "1",
+		Description: "1",
+		WebURL:      "1",
+		GroupName:   "1",
+	}
+	return projects, err*/
 }
 
-func (u *ProjectService) GetGitlabProject() (projectList []model.Project, err error) {
+/*func (u *ProjectService) GetGitlabProject() (projectList []model.Project, err error) {
 
 	git, err := mygitlab.InitGitlabClient()
 	for i := 1; i < 100; i++ {
@@ -56,4 +69,4 @@ func (u *ProjectService) GetGitlabProject() (projectList []model.Project, err er
 		}
 	}
 	return projectList,nil
-}
+}*/

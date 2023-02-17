@@ -6,6 +6,9 @@ import (
 	"github.com/gin-gonic/gin"
 	logger "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
+	"gitlab-hd/a_gitlab/dao"
+	"gitlab-hd/a_gitlab/service"
+	"gitlab-hd/config/db"
 	"gitlab-hd/config/log"
 	err "gitlab-hd/exception"
 	"gitlab-hd/a_gitlab/controller"
@@ -37,22 +40,17 @@ func InitGinConfig() *gin.Engine {
 
 //设置路由
 func InitApiRouter(router *gin.Engine) {
-	// 健康检测
-	router.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
+	gitlab_project := controller.NewProjectHandler(service.NewProjectdao(dao.NewProjectdao(db.DB)))
 
-	userGroup := router.Group("project/")
+	gitlabGroup := router.Group("gitlab/")
 	{
-		userGroup.
-			GET("/:id", controller.Project.FindProjectByID)
+		gitlabGroup.
+			GET("/:id", gitlab_project.FindProjectByID)
 	}
 	// 健康检测
-	userGroup = router.Group("test/")
+	testGroup := router.Group("test/")
 	{
-		userGroup.GET("/ping", func(c *gin.Context) {
+		testGroup.GET("/ping", func(c *gin.Context) {
 			c.JSON(200, gin.H{
 				"message": "pong",
 			})

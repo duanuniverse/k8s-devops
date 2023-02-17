@@ -11,7 +11,7 @@ import (
 
 var (
 	isInit bool
-	GORM   *gorm.DB
+	DB   *gorm.DB
 	err    error
 )
 
@@ -42,21 +42,21 @@ func InitDB() {
 		port,
 		dbname)
 	//与数据库建立连接，生成一个*gorm.DB类型的对象
-	GORM, err = gorm.Open(DbType, dsn)
+	DB, err = gorm.Open(DbType, dsn)
 	if err != nil {
 		panic("数据库连接失败" + err.Error())
 	}
 
 	//打印sql语句
-	GORM.LogMode(logMode)
+	DB.LogMode(logMode)
 
 	//开启连接池
 	// 连接池最大允许的空闲连接数，如果没有sql任务需要执行的连接数大于20，超过的连接会被连接池关闭
-	GORM.DB().SetMaxIdleConns(maxIdleConns)
+	DB.DB().SetMaxIdleConns(maxIdleConns)
 	// 设置了连接可复用的最大时间
-	GORM.DB().SetMaxOpenConns(maxOpenConns)
+	DB.DB().SetMaxOpenConns(maxOpenConns)
 	// 设置了连接可复用的最大时间
-	GORM.DB().SetConnMaxLifetime(time.Duration(connMaxLifetime))
+	DB.DB().SetConnMaxLifetime(time.Duration(connMaxLifetime))
 
 	isInit = true
 
@@ -74,5 +74,5 @@ func InitDB() {
 //db的关闭函数
 func Close() error {
 	logger.Info("关闭数据库连接")
-	return GORM.Close()
+	return DB.Close()
 }
